@@ -1,0 +1,6 @@
+# meson
+builddir
+
+# JetBrains
+CMakeLists.txt
+cmake-build-*
