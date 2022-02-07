@@ -10,33 +10,6 @@ extern "C" {
 #include <stdint.h>
 #include <sys/types.h>
 
-typedef enum {
-    C_FLAG_INT,
-    C_FLAG_INT_8,
-    C_FLAG_INT_16,
-    C_FLAG_INT_32,
-    C_FLAG_INT_64,
-    C_FLAG_SSIZE_T,
-    C_FLAG_UNSIGNED,
-    C_FLAG_UINT_8,
-    C_FLAG_UINT_16,
-    C_FLAG_UINT_32,
-    C_FLAG_UINT_64,
-    C_FLAG_SIZE_T,
-    C_FLAG_BOOL,
-    C_FLAG_STRING,
-} CFlagType;
-
-typedef struct
-{
-    CFlagType type;
-    const char *long_name;
-    const char *short_name;
-    const char *desc;
-    uintmax_t default_data;
-    uintmax_t data;
-} CFlag;
-
 // clang-format off
 /**
  * Declare `c_flag_*` function definition for any type.

@@ -1,0 +1,9 @@
+prefix=/usr
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: c-flags
+Description: Library for parsing command line arguments easily
+Version: 1.0.0
+Libs: -L${libdir} -lc-flags
+Cflags: -I${includedir}/

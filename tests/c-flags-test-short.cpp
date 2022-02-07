@@ -1,6 +1,5 @@
+#include <c-flags.h>
 #include <gtest/gtest.h>
-
-#include "c-flags.h"
 
 TEST(CFlagsTestsShortName, Positive)
 {

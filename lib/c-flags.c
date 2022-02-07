@@ -12,6 +12,33 @@
 #define C_FLAGS_CAPACITY 64
 #endif
 
+typedef enum {
+    C_FLAG_INT,
+    C_FLAG_INT_8,
+    C_FLAG_INT_16,
+    C_FLAG_INT_32,
+    C_FLAG_INT_64,
+    C_FLAG_SSIZE_T,
+    C_FLAG_UNSIGNED,
+    C_FLAG_UINT_8,
+    C_FLAG_UINT_16,
+    C_FLAG_UINT_32,
+    C_FLAG_UINT_64,
+    C_FLAG_SIZE_T,
+    C_FLAG_BOOL,
+    C_FLAG_STRING,
+} CFlagType;
+
+typedef struct
+{
+    CFlagType type;
+    const char *long_name;
+    const char *short_name;
+    const char *desc;
+    uintmax_t default_data;
+    uintmax_t data;
+} CFlag;
+
 static CFlag flags[C_FLAGS_CAPACITY] = {0};
 static size_t flags_size = 0;
 
@@ -213,8 +240,6 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
 
                     sv_value = sv_from_string(argv[++arg]);
                 }
-
-                flag_long = true;
             }
             // `--flag=value`
             else {
@@ -232,11 +257,12 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
 
                 flag = find_c_flag_by_long_name(sv_long_name);
                 if (flag == NULL) {
-                    printf(B("ERROR: ") "unknown flag " B("--" SVFMT) "\n",
-                           SVARG(sv_long_name));
+                    printf(B("ERROR: ") "unknown flag " B("--" SVFMT) "\n", SVARG(sv_long_name));
                     goto error;
                 }
             }
+
+            flag_long = true;
         }
         // `-f value`
         else if (sv_starts_with(token, sv_from_string("-"))) {
@@ -244,8 +270,7 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
 
             flag = find_c_flag_by_short_name(sv_short_name);
             if (flag == NULL) {
-                printf(B("ERROR: ") "unknown flag " B("-" SVFMT) "\n",
-                       SVARG(sv_short_name));
+                printf(B("ERROR: ") "unknown flag " B("-" SVFMT) "\n", SVARG(sv_short_name));
                 goto error;
             }
 

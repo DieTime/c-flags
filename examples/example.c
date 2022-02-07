@@ -1,7 +1,6 @@
+#include <c-flags.h>
 #include <inttypes.h>
 #include <stdio.h>
-
-#include "c-flags.h"
 
 int main(int argc, char *argv[])
 {
