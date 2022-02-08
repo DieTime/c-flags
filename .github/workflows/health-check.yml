@@ -1,0 +1,44 @@
+name: Health check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Build & Test & Run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update repositories
+        run: sudo apt-get update -qq
+
+      - name: Install meson build system
+        run: |
+          sudo apt-get install -y python3
+          pip3 install meson
+
+      - name: Install ninja build system
+        run: sudo apt-get install -y ninja-build
+
+      - name: Install google test framework
+        run: sudo apt-get install -y libgtest-dev
+
+      - name: Configure build directory
+        run: meson builddir
+
+      - name: Compile project
+        run: |
+          cd builddir
+          meson compile -j 8
+
+      - name: Run tests
+        run: |
+          cd builddir
+          meson test
+
+      - name: Start example
+        run: |
+          cd builddir/examples
+          ./example --help
