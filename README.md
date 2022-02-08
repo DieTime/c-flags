@@ -1,4 +1,11 @@
-# C-flags
+<p align="center">
+    <img src="assets/icon.png" width="400px" style="margin-bottom: 5px;" />
+</p>
+
+<p align="center">
+    <img src="https://github.com/DieTime/c-flags/actions/workflows/health-check.yml/badge.svg" alt="Health check status" />
+    <img src="https://img.shields.io/github/license/DieTime/c-flags?color=%231cc727" alt="License type" />
+</p>
 
 Library for parsing command line arguments easily. Like golang `flag` module.
 
