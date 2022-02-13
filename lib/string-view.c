@@ -1,4 +1,5 @@
 #include <memory.h>
+#include <string.h>
 
 #include "string-view.h"
 
