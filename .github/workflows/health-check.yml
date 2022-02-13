@@ -42,3 +42,8 @@ jobs:
         run: |
           cd builddir/examples
           ./example --help
+
+      - name: Start single header example
+        run: |
+          cd builddir/examples
+          ./example-single-header --help
