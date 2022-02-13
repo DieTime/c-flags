@@ -3,13 +3,16 @@
 </p>
 
 <p align="center">
-    <img src="https://github.com/DieTime/c-flags/actions/workflows/health-check.yml/badge.svg" alt="Health check status" />
+    <img src="https://github.com/DieTime/c-flags/actions/workflows/health-check.yml/badge.svg" alt="health check status" />
     <img src="https://img.shields.io/github/license/DieTime/c-flags?color=%231cc727" alt="License type" />
+    <img src="https://img.shields.io/badge/supports-single%20header-green?color=%231cc727" alt="License type" />
 </p>
 
 Library for parsing command line arguments easily. Like golang `flag` module.
 
-> Currently working and tested on `Linux`
+>❗ Currently working and tested on `Linux`
+
+>👍 Supports [single header](single-header/c-flags.h) version
 
 # 🔨 Building and installing
 
