@@ -38,6 +38,8 @@ DECLARE_C_FLAG_DEF(uint64_t, uint64)
 DECLARE_C_FLAG_DEF(size_t, size_t)
 DECLARE_C_FLAG_DEF(bool, bool)
 DECLARE_C_FLAG_DEF(char *, string)
+DECLARE_C_FLAG_DEF(float, float)
+DECLARE_C_FLAG_DEF(double, double)
 
 /**
  * Add application name and positional arguments description

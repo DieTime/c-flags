@@ -20,6 +20,9 @@ TEST(CFlagsTestsShortName, Positive)
     bool *bool_value = c_flag_bool("bool", "b", nullptr, false);
     char **string_value = c_flag_string("string", "str", nullptr, "hello");
 
+    float *float_value = c_flag_float("float", "flt", nullptr, 0.0);
+    double *double_value = c_flag_double("double", "dbl", nullptr, 0.0);
+
     // clang-format off
     const char *argv_raw[] = {"app", "-i",   "1",
                                      "-i8",  "1",
@@ -34,7 +37,9 @@ TEST(CFlagsTestsShortName, Positive)
                                      "-u64", "1",
                                      "-s",   "1",
                                      "-b",
-                                     "-str", "hello-world"};
+                                     "-str", "hello-world",
+                                     "-flt", "1.0",
+                                     "-dbl", "1.0"};
     // clang-format on
     char **argv = (char **) argv_raw;
     int argc = (int) (sizeof(argv_raw) / sizeof(argv_raw[0]));
@@ -57,6 +62,9 @@ TEST(CFlagsTestsShortName, Positive)
 
     EXPECT_EQ(*bool_value, true);
     EXPECT_STREQ(*string_value, "hello-world");
+
+    EXPECT_EQ(*float_value, 1.0);
+    EXPECT_EQ(*double_value, 1.0);
 
     EXPECT_EQ(argc, 0);
 }
@@ -124,3 +132,11 @@ DECLARE_NEGATIVE_TEST(uint64, "18446744073709551616", 3)
 DECLARE_NEGATIVE_TEST(size_t, "a", 1)
 DECLARE_NEGATIVE_TEST(size_t, "-1", 2)
 DECLARE_NEGATIVE_TEST(size_t, "18446744073709551616", 3)
+
+DECLARE_NEGATIVE_TEST(float, "a", 1)
+DECLARE_NEGATIVE_TEST(float, "1.a1", 2)
+DECLARE_NEGATIVE_TEST(float, "-1.a1", 3)
+
+DECLARE_NEGATIVE_TEST(double, "a", 1)
+DECLARE_NEGATIVE_TEST(double, "1.a1", 2)
+DECLARE_NEGATIVE_TEST(double, "-1.a1", 3)

@@ -27,6 +27,8 @@ typedef enum {
     C_FLAG_SIZE_T,
     C_FLAG_BOOL,
     C_FLAG_STRING,
+    C_FLAG_FLOAT,
+    C_FLAG_DOUBLE,
 } CFlagType;
 
 typedef struct
@@ -139,6 +141,29 @@ static char *c_flags_extra_args_desc = NULL;
                                                                                                    \
     *C_FLAG_DATA_AS_PTR(flag, ptr_type) = (ptr_type) number;                                       \
 }
+
+#define C_FLAG_LOAD_FLOATING_VALUE(flag, is_flag_long, ptr_type, value, strtox_fun, usage_on_error)\
+{                                                                                                  \
+    char *end_ptr;                                                                                 \
+    errno = 0;                                                                                     \
+                                                                                                   \
+    ptr_type number = strtox_fun(value, &end_ptr);                                                 \
+    bool value_fully_parsed = (size_t) (end_ptr - (value)) == strlen(value);                       \
+                                                                                                   \
+    if (errno != 0 || value_fully_parsed) {                                                        \
+        printf(B("ERROR: ") "invalid value " B("%s") " for " B(#ptr_type) " flag " B("%s%s") "\n", \
+               (value),                                                                            \
+               (is_flag_long) ? "--" : "-",                                                        \
+               (is_flag_long) ? (flag)->long_name : (flag)->short_name);                           \
+                                                                                                   \
+        if (usage_on_error)                                                                        \
+            c_flags_usage();                                                                       \
+                                                                                                   \
+        exit(1);                                                                                   \
+    }                                                                                              \
+                                                                                                   \
+    *C_FLAG_DATA_AS_PTR(flag, ptr_type) = number;                                                  \
+}
 // clang-format on
 
 #define B(text) "\033[1m" text "\033[0m"
@@ -172,6 +197,8 @@ DECLARE_C_FLAG_IMPL(C_FLAG_UINT_64, uint64_t, uint64)
 DECLARE_C_FLAG_IMPL(C_FLAG_SIZE_T, size_t, size_t)
 DECLARE_C_FLAG_IMPL(C_FLAG_BOOL, bool, bool)
 DECLARE_C_FLAG_IMPL(C_FLAG_STRING, char *, string)
+DECLARE_C_FLAG_IMPL(C_FLAG_FLOAT, float, float)
+DECLARE_C_FLAG_IMPL(C_FLAG_DOUBLE, double, double)
 
 void c_flags_add_info(const char *app_name, const char *positional_args_desc)
 {
@@ -334,6 +361,12 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
         case C_FLAG_STRING:
             *C_FLAG_DATA_AS_PTR(flag, char *) = value;
             break;
+        case C_FLAG_FLOAT:
+            C_FLAG_LOAD_FLOATING_VALUE(flag, flag_long, float, value, strtof, usage_on_error);
+            break;
+        case C_FLAG_DOUBLE:
+            C_FLAG_LOAD_FLOATING_VALUE(flag, flag_long, double, value, strtod, usage_on_error);
+            break;
         default:
             assert(false && "not all flag types implements c_flags_parse()");
         }
@@ -400,6 +433,12 @@ static char *c_flag_default_to_str(const CFlag *flag)
         return *C_FLAG_DATA_AS_PTR(flag, bool) ? "true" : "false";
     case C_FLAG_STRING:
         return *C_FLAG_DATA_AS_PTR(flag, char *);
+    case C_FLAG_FLOAT:
+        sprintf(buff, "%f", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, float));
+        return buff;
+    case C_FLAG_DOUBLE:
+        sprintf(buff, "%lf", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, double));
+        return buff;
     default:
         assert(false && "not all flag types implements c_flag_default_to_str()");
     }
