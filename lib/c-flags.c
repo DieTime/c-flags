@@ -86,7 +86,7 @@ static char *c_flags_extra_args_desc = NULL;
     errno = 0;                                                                                     \
                                                                                                    \
     long long number = strtoll(value, &end_ptr, 10);                                               \
-    bool value_fully_parsed = (size_t) (end_ptr - (value)) != strlen(value);                       \
+    bool value_fully_parsed = (size_t) (end_ptr - (value)) == strlen(value);                       \
                                                                                                    \
     /*
      * Getting signed number limits
@@ -97,7 +97,7 @@ static char *c_flags_extra_args_desc = NULL;
     ptr_type min = (max) << (sizeof(ptr_type) * 8 - 1);                                            \
     (max) = ~(min);                                                                                \
                                                                                                    \
-    if (errno != 0 || value_fully_parsed || number < (min) || number > (max)) {                    \
+    if (errno != 0 || !value_fully_parsed || number < (min) || number > (max)) {                   \
         printf(B("ERROR: ") "invalid value " B("%s") " for " B(#ptr_type) " flag " B("%s%s") "\n", \
                (value),                                                                            \
                (is_flag_long) ? "--" : "-",                                                        \
@@ -118,7 +118,7 @@ static char *c_flags_extra_args_desc = NULL;
     errno = 0;                                                                                     \
                                                                                                    \
     unsigned long long number = strtoull(value, &end_ptr, 10);                                     \
-    bool value_fully_parsed = (size_t) (end_ptr - (value)) != strlen(value);                       \
+    bool value_fully_parsed = (size_t) (end_ptr - (value)) == strlen(value);                       \
                                                                                                    \
     /*
      * Getting unsigned number limits
@@ -127,7 +127,7 @@ static char *c_flags_extra_args_desc = NULL;
     ptr_type max = 0;                                                                              \
     (max) = ~(max);                                                                                \
                                                                                                    \
-    if (errno != 0 || (value)[0] == '-' || value_fully_parsed || number > (max)) {                 \
+    if (errno != 0 || (value)[0] == '-' || !value_fully_parsed || number > (max)) {                \
         printf(B("ERROR: ") "invalid value " B("%s") " for " B(#ptr_type) " flag " B("%s%s") "\n", \
                (value),                                                                            \
                (is_flag_long) ? "--" : "-",                                                        \
@@ -150,7 +150,7 @@ static char *c_flags_extra_args_desc = NULL;
     ptr_type number = strtox_fun(value, &end_ptr);                                                 \
     bool value_fully_parsed = (size_t) (end_ptr - (value)) == strlen(value);                       \
                                                                                                    \
-    if (errno != 0 || value_fully_parsed) {                                                        \
+    if (errno != 0 || !value_fully_parsed) {                                                       \
         printf(B("ERROR: ") "invalid value " B("%s") " for " B(#ptr_type) " flag " B("%s%s") "\n", \
                (value),                                                                            \
                (is_flag_long) ? "--" : "-",                                                        \
