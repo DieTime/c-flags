@@ -1,6 +1,6 @@
 src = files('c-flags.c', 'string-view.c')
 
-lib = shared_library('c-flags', src, install: true)
+lib = shared_library('c-flags', src, version: '1.1.0', install: true)
 
 install_headers('c-flags.h')
 
