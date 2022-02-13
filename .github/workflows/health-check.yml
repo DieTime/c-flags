@@ -26,7 +26,7 @@ jobs:
         run: sudo apt-get install -y libgtest-dev
 
       - name: Configure build directory
-        run: meson builddir
+        run: meson builddir -Dtests=true -Dexamples=true
 
       - name: Compile project
         run: |
