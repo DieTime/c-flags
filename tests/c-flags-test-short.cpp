@@ -21,18 +21,18 @@ TEST(CFlagsTestsShortName, Positive)
     char **string_value = c_flag_string("string", "str", nullptr, "hello");
 
     // clang-format off
-    const char *argv_raw[] = {"app", "-i", "1",
-                                     "-i8", "1",
+    const char *argv_raw[] = {"app", "-i",   "1",
+                                     "-i8",  "1",
                                      "-i16", "1",
                                      "-i32", "1",
                                      "-i64", "1",
-                                     "-ss", "1",
-                                     "-u", "1",
-                                     "-u8", "1",
+                                     "-ss",  "1",
+                                     "-u",   "1",
+                                     "-u8",  "1",
                                      "-u16", "1",
                                      "-u32", "1",
                                      "-u64", "1",
-                                     "-s", "1",
+                                     "-s",   "1",
                                      "-b",
                                      "-str", "hello-world"};
     // clang-format on
