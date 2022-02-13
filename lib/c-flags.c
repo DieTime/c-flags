@@ -403,6 +403,8 @@ static char *c_flag_default_to_str(const CFlag *flag)
     default:
         assert(false && "not all flag types implements c_flag_default_to_str()");
     }
+
+    return "unreachable";
 }
 
 void c_flags_usage(void)
