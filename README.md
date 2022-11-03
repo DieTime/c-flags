@@ -41,7 +41,7 @@ target_link_libraries(program PUBLIC ${C_FLAGS_LIBRARIES})
 
 # 👨‍💻 Usage
 
-You can see examples sources [here](exaples).
+You can see examples sources [here](examples).
 
 ```c
 #include <c-flags.h>
