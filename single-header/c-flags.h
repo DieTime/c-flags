@@ -1,5 +1,5 @@
-#ifndef C_FLAGS_SINGLE_HEADER_H_
-#define C_FLAGS_SINGLE_HEADER_H_
+#ifndef C_FLAGS_SINGLE_HEADER_H
+#define C_FLAGS_SINGLE_HEADER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -275,12 +275,12 @@ static char *c_flags_extra_args_desc = NULL;
     *C_FLAG_DATA_AS_PTR(flag, ptr_type) = (ptr_type) number;                                       \
 }
 
-#define C_FLAG_LOAD_FLOATING_VALUE(flag, is_flag_long, ptr_type, value, func, usage_on_error)      \
+#define C_FLAG_LOAD_FLOATING_VALUE(flag, is_flag_long, ptr_type, value, strtox_fun, usage_on_error)\
 {                                                                                                  \
     char *end_ptr;                                                                                 \
     errno = 0;                                                                                     \
                                                                                                    \
-    ptr_type number = func(value, &end_ptr);                                                       \
+    ptr_type number = strtox_fun(value, &end_ptr);                                                 \
     bool value_fully_parsed = (size_t) (end_ptr - (value)) == strlen(value);                       \
                                                                                                    \
     if (errno != 0 || !value_fully_parsed) {                                                       \
@@ -392,7 +392,7 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
                 }
 
                 if (flag->type != C_FLAG_BOOL) {
-                    if (arg >= argc) {
+                    if (arg + 1 >= argc) {
                         printf(B("ERROR: ") "no value for flag " B("--" SVFMT) "\n",
                                SVARG(sv_long_name));
                         goto error;
@@ -435,7 +435,7 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
             }
 
             if (flag->type != C_FLAG_BOOL) {
-                if (arg >= argc) {
+                if (arg + 1 >= argc) {
                     printf(B("ERROR: ") "no value for flag " B("-" SVFMT) "\n",
                            SVARG(sv_short_name));
                     goto error;
@@ -671,4 +671,4 @@ int sv_index_of(StringView a, StringView b)
 }
 #endif
 
-#endif // C_FLAGS_SINGLE_HEADER_H_
+#endif // C_FLAGS_SINGLE_HEADER_H

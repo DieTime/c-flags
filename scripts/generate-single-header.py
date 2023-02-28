@@ -104,7 +104,7 @@ def write_lines(lines: List[str], dest: str):
 if __name__ == '__main__':
     LIB_SRC_DIR = '../lib'
     SINGLE_HEADER_DEST = '../single-header/c-flags.h'
-    DEFINITION = 'C_FLAGS_SINGLE_HEADER_H_'
+    DEFINITION = 'C_FLAGS_SINGLE_HEADER_H'
     SINGLE_HEADER_LINES = []
 
     headers = get_headers_paths(LIB_SRC_DIR)
