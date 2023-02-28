@@ -1,13 +1,10 @@
-src = files('c-flags.c', 'string-view.c')
+sources = [ 'c-flags.c', 'string-view.c' ]
+headers = [ 'c-flags.h' ]
 
-lib = shared_library('c-flags', src, version: '1.1.0', install: true)
+cflags = shared_library('c-flags', sources, version: meson.project_version(), install: true)
+cflags_dep = declare_dependency(link_with: cflags, include_directories: ['.'])
 
-install_headers('c-flags.h')
+pkg = import('pkgconfig')
+pkg.generate(cflags, description: 'Library for parsing command line arguments easily')
 
-install_data('c-flags.pc',
-             install_dir: get_option('prefix') / get_option('datadir') / 'pkgconfig')
-
-cflags_inc = include_directories('.')
-
-cflags_lib = declare_dependency(link_with: lib,
-                                include_directories: cflags_inc)
+install_headers(headers)

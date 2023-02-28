@@ -4,7 +4,7 @@ endif
 
 deps = [
     dependency('gtest'),
-    cflags_lib
+    cflags_dep,
 ]
 
 test_default = executable('c-flags-test-default',
