@@ -97,7 +97,7 @@ static char *c_flags_extra_args_desc = NULL;
     (max) = ~(min);                                                                                \
                                                                                                    \
     if (errno != 0 || !value_fully_parsed || number < (min) || number > (max)) {                   \
-        printf(B("ERROR: ") "invalid value " B("%s") " for " B(#ptr_type) " flag " B("%s%s") "\n", \
+        printf("ERROR: invalid value %s for " #ptr_type " flag %s%s\n",                            \
                (value),                                                                            \
                (is_flag_long) ? "--" : "-",                                                        \
                (is_flag_long) ? (flag)->long_name : (flag)->short_name);                           \
@@ -127,7 +127,7 @@ static char *c_flags_extra_args_desc = NULL;
     (max) = ~(max);                                                                                \
                                                                                                    \
     if (errno != 0 || (value)[0] == '-' || !value_fully_parsed || number > (max)) {                \
-        printf(B("ERROR: ") "invalid value " B("%s") " for " B(#ptr_type) " flag " B("%s%s") "\n", \
+        printf("ERROR: invalid value %s for " #ptr_type " flag %s%s\n",                            \
                (value),                                                                            \
                (is_flag_long) ? "--" : "-",                                                        \
                (is_flag_long) ? (flag)->long_name : (flag)->short_name);                           \
@@ -150,7 +150,7 @@ static char *c_flags_extra_args_desc = NULL;
     bool value_fully_parsed = (size_t) (end_ptr - (value)) == strlen(value);                       \
                                                                                                    \
     if (errno != 0 || !value_fully_parsed) {                                                       \
-        printf(B("ERROR: ") "invalid value " B("%s") " for " B(#ptr_type) " flag " B("%s%s") "\n", \
+        printf("ERROR: invalid value %s for " #ptr_type " flag %s%s\n",                            \
                (value),                                                                            \
                (is_flag_long) ? "--" : "-",                                                        \
                (is_flag_long) ? (flag)->long_name : (flag)->short_name);                           \
@@ -164,8 +164,6 @@ static char *c_flags_extra_args_desc = NULL;
     *C_FLAG_DATA_AS_PTR(flag, ptr_type) = number;                                                  \
 }
 // clang-format on
-
-#define B(text) "\033[1m" text "\033[0m"
 
 static bool flag_names_unique(const char *long_name, const char *short_name)
 {
@@ -252,14 +250,13 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
 
                 flag = find_c_flag_by_long_name(sv_long_name);
                 if (flag == NULL) {
-                    printf(B("ERROR: ") "unknown flag " B("--" SVFMT) "\n", SVARG(sv_long_name));
+                    printf("ERROR: unknown flag --" SVFMT "\n", SVARG(sv_long_name));
                     goto error;
                 }
 
                 if (flag->type != C_FLAG_BOOL) {
                     if (arg + 1 >= argc) {
-                        printf(B("ERROR: ") "no value for flag " B("--" SVFMT) "\n",
-                               SVARG(sv_long_name));
+                        printf("ERROR: no value for flag --" SVFMT "\n", SVARG(sv_long_name));
                         goto error;
                     }
 
@@ -275,14 +272,13 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
                 sv_value = sv_chop_left(token, index_of_eq + 1);
 
                 if (sv_value.data == NULL) { // `--flag=`
-                    printf(B("ERROR: ") "no value for flag " B("--" SVFMT) "\n",
-                           SVARG(sv_long_name));
+                    printf("ERROR: no value for flag --" SVFMT "\n", SVARG(sv_long_name));
                     goto error;
                 }
 
                 flag = find_c_flag_by_long_name(sv_long_name);
                 if (flag == NULL) {
-                    printf(B("ERROR: ") "unknown flag " B("--" SVFMT) "\n", SVARG(sv_long_name));
+                    printf("ERROR: unknown flag --" SVFMT "\n", SVARG(sv_long_name));
                     goto error;
                 }
             }
@@ -295,14 +291,13 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
 
             flag = find_c_flag_by_short_name(sv_short_name);
             if (flag == NULL) {
-                printf(B("ERROR: ") "unknown flag " B("-" SVFMT) "\n", SVARG(sv_short_name));
+                printf("ERROR: unknown flag -" SVFMT "\n", SVARG(sv_short_name));
                 goto error;
             }
 
             if (flag->type != C_FLAG_BOOL) {
                 if (arg + 1 >= argc) {
-                    printf(B("ERROR: ") "no value for flag " B("-" SVFMT) "\n",
-                           SVARG(sv_short_name));
+                    printf("ERROR: no value for flag -" SVFMT "\n", SVARG(sv_short_name));
                     goto error;
                 }
 
@@ -441,14 +436,15 @@ static char *c_flag_default_to_str(const CFlag *flag)
 void c_flags_usage(void)
 {
     if (c_flags_app_name) {
-        printf(B("USAGE:\n"));
-        printf("   %s " B("[OPTIONS]") " %s\n\n",
+        printf("USAGE:\n");
+        printf("   %s [OPTIONS] %s\n\n",
                c_flags_app_name,
                c_flags_extra_args_desc != NULL ? c_flags_extra_args_desc : "");
     }
 
-    printf(B("OPTIONS:\n"));
+    printf("OPTIONS:");
     for (size_t i = 0; i < flags_size; i++) {
+        printf("\n");
         const CFlag *flag = &flags[i];
 
         printf("  --%s", flag->long_name);
@@ -457,12 +453,10 @@ void c_flags_usage(void)
         printf("\n");
 
         if (flag->desc != NULL)
-            printf("      " B("Description: ") "%s\n", flag->desc);
+            printf("      Description: %s\n", flag->desc);
 
         char *default_val = c_flag_default_to_str(flag);
         if (default_val != NULL)
-            printf("      " B("Default: ") "%s\n", c_flag_default_to_str(flag));
-
-        printf("\n");
+            printf("      Default: %s\n", c_flag_default_to_str(flag));
     }
 }
