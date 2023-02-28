@@ -1,5 +1,5 @@
-#ifndef STRING_VIEW_H_
-#define STRING_VIEW_H_
+#ifndef STRING_VIEW_H
+#define STRING_VIEW_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,4 +83,4 @@ int sv_index_of(StringView a, StringView b);
 }
 #endif
 
-#endif // STRING_VIEW_H_
+#endif // STRING_VIEW_H

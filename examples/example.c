@@ -4,7 +4,11 @@
 
 int main(int argc, char *argv[])
 {
-    c_flags_add_info("program", "<file-path>");
+    if (argc > 0)
+        c_flags_set_application_name(argv[0]);
+
+    c_flags_set_positional_args_description("<file-path>");
+    c_flags_set_description("A program to demonstrate the capabilities of the c-flags library");
 
     bool *verbose = c_flag_bool("verbose", "v", "verbose mode", false);
     uint64_t *batch = c_flag_uint64("batch-size", "bs", "declare batch size", 32);

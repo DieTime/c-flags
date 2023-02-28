@@ -1,5 +1,5 @@
-#ifndef C_FLAGS_H_
-#define C_FLAGS_H_
+#ifndef C_FLAGS_H
+#define C_FLAGS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,13 +41,41 @@ DECLARE_C_FLAG_DEF(float, float)
 DECLARE_C_FLAG_DEF(double, double)
 
 /**
- * Add application name and positional arguments description
- * for customize program usage: `app_name` [OPTIONS] `positional_args_desc`.
+ * Customize usage block of help message.
+ * The final help message will contain the following block:
  *
- * @param app_name Application name
- * @param positional_args_desc Positional arguments description (may be NULL)
+ *  USAGE:
+ *     <text defined by you> [OPTIONS] ...
+ *
+ * @param appname Application name of the usage block
  */
-void c_flags_add_info(const char *app_name, const char *positional_args_desc);
+void c_flags_set_application_name(const char *appname);
+
+/**
+ * Customize usage block of help message.
+ * The final help message will contain the following block:
+ *
+ * In order for the usage block to be printed in the help
+ * message, you must set the application name using
+ * the `c_flags_set_application_name()` function.
+ *
+ *  USAGE:
+ *     ... [OPTIONS] <text defined by you>
+ *
+ * @param description Postitional arguments description of the usage block
+ */
+void c_flags_set_positional_args_description(const char *description);
+
+/**
+ * Customize description block of help message.
+ * The final help message will contain the following block:
+ *
+ *  DESCRIPTION:
+ *     <text defined by you>
+ *
+ * @param description Text of the usage block
+ */
+void c_flags_set_description(const char *description);
 
 /**
  * Parse command line arguments into declared arguments.
@@ -68,4 +96,4 @@ void c_flags_usage(void);
 }
 #endif
 
-#endif // C_FLAGS_H_
+#endif // C_FLAGS_H

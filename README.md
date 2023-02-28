@@ -50,7 +50,11 @@ You can see examples sources [here](examples).
 
 int main(int argc, char *argv[])
 {
-    c_flags_add_info("program", "<file-path>");
+    if (argc > 0)
+        c_flags_set_application_name(argv[0]);
+
+    c_flags_set_positional_args_description("<file-path>");
+    c_flags_set_description("A program to demonstrate the capabilities of the c-flags library");
 
     bool *verbose = c_flag_bool("verbose", "v", "verbose mode", false);
     uint64_t *batch = c_flag_uint64("batch-size", "bs", "declare batch size", 32);
@@ -80,31 +84,33 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
 ```
 
 # 💻 Usage output example
 
 ```
 USAGE:
-   program [OPTIONS] <file-path>
+   builddir/examples/example [OPTIONS] <file-path>
+
+DESCRIPTION:
+   A program to demonstrate the capabilities of the c-flags library
 
 OPTIONS:
-  --verbose, -v
-      Description: verbose mode
-      Default: false
+   --verbose, -v
+       Description: verbose mode
+       Default: false
 
-  --batch-size, -bs
-      Description: declare batch size
-      Default: 32
+   --batch-size, -bs
+       Description: declare batch size
+       Default: 32
 
-  --offset, -off
-      Description: declare file offset
-      Default: 0
+   --offset, -off
+       Description: declare file offset
+       Default: 0
 
-  --help, -h
-      Description: show usage
-      Default: false
+   --help, -h
+       Description: show usage
+       Default: true
 ```
 
 ## ☕ Support

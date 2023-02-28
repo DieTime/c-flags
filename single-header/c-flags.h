@@ -47,13 +47,41 @@ DECLARE_C_FLAG_DEF(float, float)
 DECLARE_C_FLAG_DEF(double, double)
 
 /**
- * Add application name and positional arguments description
- * for customize program usage: `app_name` [OPTIONS] `positional_args_desc`.
+ * Customize usage block of help message.
+ * The final help message will contain the following block:
  *
- * @param app_name Application name
- * @param positional_args_desc Positional arguments description (may be NULL)
+ *  USAGE:
+ *     <text defined by you> [OPTIONS] ...
+ *
+ * @param appname Application name of the usage block
  */
-void c_flags_add_info(const char *app_name, const char *positional_args_desc);
+void c_flags_set_application_name(const char *appname);
+
+/**
+ * Customize usage block of help message.
+ * The final help message will contain the following block:
+ *
+ * In order for the usage block to be printed in the help
+ * message, you must set the application name using
+ * the `c_flags_set_application_name()` function.
+ *
+ *  USAGE:
+ *     ... [OPTIONS] <text defined by you>
+ *
+ * @param description Postitional arguments description of the usage block
+ */
+void c_flags_set_positional_args_description(const char *description);
+
+/**
+ * Customize description block of help message.
+ * The final help message will contain the following block:
+ *
+ *  DESCRIPTION:
+ *     <text defined by you>
+ *
+ * @param description Text of the usage block
+ */
+void c_flags_set_description(const char *description);
 
 /**
  * Parse command line arguments into declared arguments.
@@ -174,8 +202,9 @@ typedef struct
 static CFlag flags[C_FLAGS_CAPACITY] = {0};
 static size_t flags_size = 0;
 
-static char *c_flags_app_name = NULL;
-static char *c_flags_extra_args_desc = NULL;
+static char *c_flags_appname_message = NULL;
+static char *c_flags_pos_args_desc = NULL;
+static char *c_flags_description_message = NULL;
 
 #define C_FLAG_DATA_AS_PTR(flag, ptr_type)         ((ptr_type *) (&((flag)->data)))
 #define C_FLAG_DEFAULT_DATA_AS_PTR(flag, ptr_type) ((ptr_type *) (&((flag)->default_data)))
@@ -327,10 +356,19 @@ DECLARE_C_FLAG_IMPL(C_FLAG_STRING, char *, string)
 DECLARE_C_FLAG_IMPL(C_FLAG_FLOAT, float, float)
 DECLARE_C_FLAG_IMPL(C_FLAG_DOUBLE, double, double)
 
-void c_flags_add_info(const char *app_name, const char *positional_args_desc)
+void c_flags_set_application_name(const char *appname)
 {
-    c_flags_app_name = (char *) app_name;
-    c_flags_extra_args_desc = (char *) positional_args_desc;
+    c_flags_appname_message = (char *) appname;
+}
+
+void c_flags_set_positional_args_description(const char *description)
+{
+    c_flags_pos_args_desc = (char *) description;
+}
+
+void c_flags_set_description(const char *description)
+{
+    c_flags_description_message = (char *) description;
 }
 
 static CFlag *find_c_flag_by_long_name(StringView long_name)
@@ -566,29 +604,32 @@ static char *c_flag_default_to_str(const CFlag *flag)
 
 void c_flags_usage(void)
 {
-    if (c_flags_app_name) {
-        printf("USAGE:\n");
-        printf("   %s [OPTIONS] %s\n\n",
-               c_flags_app_name,
-               c_flags_extra_args_desc != NULL ? c_flags_extra_args_desc : "");
-    }
+    if (c_flags_appname_message)
+        printf("USAGE:\n   %s%s%s\n\n",
+               c_flags_appname_message,
+               (flags_size > 0) ? " [OPTIONS] " : " ",
+               c_flags_pos_args_desc ? c_flags_pos_args_desc : "");
 
-    printf("OPTIONS:");
+    if (c_flags_description_message)
+        printf("DESCRIPTION:\n   %s\n\n", c_flags_description_message);
+
+    if (flags_size > 0)
+        printf("OPTIONS:");
+
     for (size_t i = 0; i < flags_size; i++) {
-        printf("\n");
         const CFlag *flag = &flags[i];
 
-        printf("  --%s", flag->long_name);
+        printf("\n   --%s", flag->long_name);
         if (flag->short_name != NULL)
             printf(", -%s", flag->short_name);
         printf("\n");
 
         if (flag->desc != NULL)
-            printf("      Description: %s\n", flag->desc);
+            printf("       Description: %s\n", flag->desc);
 
         char *default_val = c_flag_default_to_str(flag);
         if (default_val != NULL)
-            printf("      Default: %s\n", c_flag_default_to_str(flag));
+            printf("       Default: %s\n", c_flag_default_to_str(flag));
     }
 }
 
