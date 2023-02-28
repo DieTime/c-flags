@@ -22,9 +22,6 @@ jobs:
       - name: Install ninja build system
         run: sudo apt-get install -y ninja-build
 
-      - name: Install google test framework
-        run: sudo apt-get install -y libgtest-dev
-
       - name: Configure build directory
         run: meson builddir -Dtests=true -Dexamples=true
 
