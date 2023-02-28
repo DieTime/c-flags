@@ -1,4 +1,4 @@
-project('c-flags', 'c', version: '1.3.0', license: 'MIT',
+project('c-flags', 'c', version: '1.4.0', license: 'MIT',
         default_options: ['c_std=c99', 'warning_level=3'])
 
 subdir('lib')
