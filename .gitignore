@@ -1,6 +1,4 @@
 # meson
 builddir
-
-# JetBrains
-CMakeLists.txt
-cmake-build-*
+subprojects/*
+!subprojects/*.wrap

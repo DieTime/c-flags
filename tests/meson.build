@@ -3,7 +3,7 @@ if add_languages('cpp') == false
 endif
 
 deps = [
-    dependency('gtest'),
+    dependency('gtest', fallback: 'gtest'),
     cflags_dep,
 ]
 
