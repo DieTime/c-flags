@@ -259,7 +259,7 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
                 }
 
                 if (flag->type != C_FLAG_BOOL) {
-                    if (arg >= argc) {
+                    if (arg + 1 >= argc) {
                         printf(B("ERROR: ") "no value for flag " B("--" SVFMT) "\n",
                                SVARG(sv_long_name));
                         goto error;
@@ -302,7 +302,7 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
             }
 
             if (flag->type != C_FLAG_BOOL) {
-                if (arg >= argc) {
+                if (arg + 1 >= argc) {
                     printf(B("ERROR: ") "no value for flag " B("-" SVFMT) "\n",
                            SVARG(sv_short_name));
                     goto error;
