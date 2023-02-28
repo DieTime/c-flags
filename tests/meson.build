@@ -23,6 +23,10 @@ test_long_eq = executable('c-flags-test-long-eq',
                           'main.cpp', 'c-flags-test-long-eq.cpp',
                           dependencies: deps)
 
+test_no_value = executable('c-flag-test-no-value',
+                           'main.cpp', 'c-flags-test-no-value.cpp',
+                           dependencies: deps)
+
 test_string_view = executable('string-view-tests',
                               'main.cpp', 'string-view-tests.cpp',
                               dependencies: deps)
@@ -31,4 +35,5 @@ test('c-flags test default value', test_default)
 test('c-flags test short name', test_short)
 test('c-flags test long name', test_long)
 test('c-flags test long name with equal', test_long_eq)
+test('c-flags test no value', test_no_value)
 test('string-view tests', test_string_view)
