@@ -8,7 +8,6 @@ TEST(CFlagsTestsLongNameWithEqual, Positive)
     int16_t *int16_value = c_flag_int16("int16", "i16", nullptr, 0);
     int32_t *int32_value = c_flag_int32("int32", "i32", nullptr, 0);
     int64_t *int64_value = c_flag_int64("int64", "i64", nullptr, 0);
-    ssize_t *ssize_t_value = c_flag_ssize_t("ssize", "ss", nullptr, 0);
 
     unsigned *unsigned_value = c_flag_unsigned("unsigned", "u", nullptr, 0);
     uint8_t *uint8_value = c_flag_uint8("uint8", "u8", nullptr, 0);
@@ -29,7 +28,6 @@ TEST(CFlagsTestsLongNameWithEqual, Positive)
                                      "--int16=1",
                                      "--int32=1",
                                      "--int64=1",
-                                     "--ssize=1",
                                      "--unsigned=1",
                                      "--uint8=1",
                                      "--uint16=1",
@@ -51,7 +49,6 @@ TEST(CFlagsTestsLongNameWithEqual, Positive)
     EXPECT_EQ(*int16_value, 1);
     EXPECT_EQ(*int32_value, 1);
     EXPECT_EQ(*int64_value, 1);
-    EXPECT_EQ(*ssize_t_value, 1);
 
     EXPECT_EQ(*unsigned_value, 1);
     EXPECT_EQ(*uint8_value, 1);
@@ -104,10 +101,6 @@ DECLARE_NEGATIVE_TEST(int32, "-2147483649", 3)
 DECLARE_NEGATIVE_TEST(int64, "a", 1)
 DECLARE_NEGATIVE_TEST(int64, "9223372036854775808", 2)
 DECLARE_NEGATIVE_TEST(int64, "-9223372036854775809", 3)
-
-DECLARE_NEGATIVE_TEST(ssize_t, "a", 1)
-DECLARE_NEGATIVE_TEST(ssize_t, "9223372036854775808", 2)
-DECLARE_NEGATIVE_TEST(ssize_t, "-9223372036854775809", 3)
 
 DECLARE_NEGATIVE_TEST(unsigned, "a", 1)
 DECLARE_NEGATIVE_TEST(unsigned, "-1", 2)

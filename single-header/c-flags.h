@@ -8,7 +8,6 @@ extern "C" {
 #include <assert.h>
 #include <errno.h>
 #include <inttypes.h>
-#include <memory.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -36,7 +35,6 @@ DECLARE_C_FLAG_DEF(int8_t, int8)
 DECLARE_C_FLAG_DEF(int16_t, int16)
 DECLARE_C_FLAG_DEF(int32_t, int32)
 DECLARE_C_FLAG_DEF(int64_t, int64)
-DECLARE_C_FLAG_DEF(ssize_t, ssize_t)
 DECLARE_C_FLAG_DEF(unsigned, unsigned)
 DECLARE_C_FLAG_DEF(uint8_t, uint8)
 DECLARE_C_FLAG_DEF(uint16_t, uint16)
@@ -151,7 +149,6 @@ typedef enum {
     C_FLAG_INT_16,
     C_FLAG_INT_32,
     C_FLAG_INT_64,
-    C_FLAG_SSIZE_T,
     C_FLAG_UNSIGNED,
     C_FLAG_UINT_8,
     C_FLAG_UINT_16,
@@ -321,7 +318,6 @@ DECLARE_C_FLAG_IMPL(C_FLAG_INT_8, int8_t, int8)
 DECLARE_C_FLAG_IMPL(C_FLAG_INT_16, int16_t, int16)
 DECLARE_C_FLAG_IMPL(C_FLAG_INT_32, int32_t, int32)
 DECLARE_C_FLAG_IMPL(C_FLAG_INT_64, int64_t, int64)
-DECLARE_C_FLAG_IMPL(C_FLAG_SSIZE_T, ssize_t, ssize_t)
 DECLARE_C_FLAG_IMPL(C_FLAG_UNSIGNED, unsigned, unsigned)
 DECLARE_C_FLAG_IMPL(C_FLAG_UINT_8, uint8_t, uint8)
 DECLARE_C_FLAG_IMPL(C_FLAG_UINT_16, uint16_t, uint16)
@@ -467,9 +463,6 @@ void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
         case C_FLAG_INT_64:
             C_FLAG_LOAD_SIGNED_VALUE(flag, flag_long, int64_t, value, usage_on_error)
             break;
-        case C_FLAG_SSIZE_T:
-            C_FLAG_LOAD_SIGNED_VALUE(flag, flag_long, ssize_t, value, usage_on_error)
-            break;
         case C_FLAG_UNSIGNED:
             C_FLAG_LOAD_UNSIGNED_VALUE(flag, flag_long, unsigned, value, usage_on_error)
             break;
@@ -540,9 +533,6 @@ static char *c_flag_default_to_str(const CFlag *flag)
         return buff;
     case C_FLAG_INT_64:
         sprintf(buff, "%" PRId64, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int64_t));
-        return buff;
-    case C_FLAG_SSIZE_T:
-        sprintf(buff, "%zd", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, size_t));
         return buff;
     case C_FLAG_UNSIGNED:
         sprintf(buff, "%u", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, unsigned));
