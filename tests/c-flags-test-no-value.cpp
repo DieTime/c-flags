@@ -17,8 +17,7 @@ TEST(CFlagsTestsNoValue, LongNameNoEqual)
         c_flags_parse(&argc, &argv, false);
     }, ::testing::ExitedWithCode(1), ".*");
 
-    std::string stdout = testing::internal::GetCapturedStdout();
-    EXPECT_NE(stdout.find("no value for flag"), std::string::npos) << stdout;
+    EXPECT_NE(testing::internal::GetCapturedStdout().find("no value for flag"), std::string::npos);
 }
 
 TEST(CFlagsTestsNoValue, LongName)
@@ -37,8 +36,7 @@ TEST(CFlagsTestsNoValue, LongName)
         c_flags_parse(&argc, &argv, false);
     }, ::testing::ExitedWithCode(1), ".*");
 
-    std::string stdout = testing::internal::GetCapturedStdout();
-    EXPECT_NE(stdout.find("no value for flag"), std::string::npos) << stdout;
+    EXPECT_NE(testing::internal::GetCapturedStdout().find("no value for flag"), std::string::npos);
 }
 
 TEST(CFlagsTestsNoValue, ShortName)
@@ -57,6 +55,5 @@ TEST(CFlagsTestsNoValue, ShortName)
         c_flags_parse(&argc, &argv, false);
     }, ::testing::ExitedWithCode(1), ".*");
 
-    std::string stdout = testing::internal::GetCapturedStdout();
-    EXPECT_NE(stdout.find("no value for flag"), std::string::npos) << stdout;
+    EXPECT_NE(testing::internal::GetCapturedStdout().find("no value for flag"), std::string::npos);
 }

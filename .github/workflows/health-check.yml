@@ -5,8 +5,8 @@ on:
   pull_request:
 
 jobs:
-  build:
-    name: Build & Test & Run
+  build-test-run-linux:
+    name: Linux - Build & Test & Run
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,10 +17,88 @@ jobs:
       - name: Install meson build system
         run: |
           sudo apt-get install -y python3
-          pip3 install meson
+          python3 -m pip install meson
 
       - name: Install ninja build system
         run: sudo apt-get install -y ninja-build
+
+      - name: Configure build directory
+        run: meson builddir -Dtests=true -Dexamples=true
+
+      - name: Compile project
+        run: |
+          cd builddir
+          meson compile -j 8
+
+      - name: Run tests
+        run: |
+          cd builddir
+          meson test
+
+      - name: Start example
+        run: |
+          cd builddir/examples
+          ./example --help
+
+      - name: Start single header example
+        run: |
+          cd builddir/examples
+          ./example-single-header --help
+
+  build-test-run-windows:
+    name: Windows - Build & Test & Run
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install meson build system
+        run: |
+          python -m pip install meson
+
+      - name: Configure build directory
+        run: meson builddir -Dtests=true -Dexamples=true
+
+      - name: Compile project
+        run: |
+          cd builddir
+          meson compile -j 8
+
+      - name: Run tests
+        run: |
+          cd builddir
+          meson test
+
+      - name: Start example
+        run: |
+          cd builddir\examples
+          .\example --help
+
+      - name: Start single header example
+        run: |
+          cd builddir\examples
+          .\example-single-header --help
+
+  build-test-run-macos:
+    name: MacOS - Build & Test & Run
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update repositories
+        run: brew update
+
+      - name: Unbreak python in github actions
+        run: |
+          find /usr/local/bin -lname '*/Library/Frameworks/Python.framework/*' -delete
+          sudo rm -rf /Library/Frameworks/Python.framework/
+          brew install --force python3 && brew unlink python3 && brew unlink python3 && brew link --overwrite python3
+
+      - name: Install meson build system
+        run: |
+          python3 -m pip install meson
+
+      - name: Install ninja build system
+        run: brew install ninja
 
       - name: Configure build directory
         run: meson builddir -Dtests=true -Dexamples=true
