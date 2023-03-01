@@ -1,7 +1,3 @@
-if add_languages('cpp') == false
-    error('could not add c++ compiler to project')
-endif
-
 deps = [
     dependency('gtest', fallback: 'gtest'),
     cflags_dep,
