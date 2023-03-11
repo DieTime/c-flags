@@ -9,7 +9,7 @@ jobs:
     name: Linux - Build & Test & Run
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Update repositories
         run: sudo apt-get update -qq
@@ -23,66 +23,84 @@ jobs:
         run: sudo apt-get install -y ninja-build
 
       - name: Configure build directory
-        run: meson builddir -Dtests=true -Dexamples=true
+        run: meson setup builddir -Dtests=true -Dexamples=true
 
       - name: Compile project
-        run: |
-          cd builddir
-          meson compile -j 8
+        run: meson compile -C builddir
 
       - name: Run tests
-        run: |
-          cd builddir
-          meson test
+        run: meson test -C builddir
 
       - name: Start example
-        run: |
-          cd builddir/examples
-          ./example --help
+        run: builddir/examples/example --help
 
       - name: Start single header example
-        run: |
-          cd builddir/examples
-          ./example-single-header --help
+        run: builddir/examples/example-single-header --help
 
-  build-test-run-windows:
-    name: Windows - Build & Test & Run
+  build-test-run-windows-msvc:
+    name: Windows MSVC - Build & Test & Run
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install meson build system
-        run: |
-          python -m pip install meson
+        run: python -m pip install meson
+
+      - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure build directory
-        run: meson builddir -Dtests=true -Dexamples=true
+        run: meson setup builddir -Dtests=true -Dexamples=true
 
       - name: Compile project
-        run: |
-          cd builddir
-          meson compile -j 8
+        run: meson compile -C builddir
 
       - name: Run tests
-        run: |
-          cd builddir
-          meson test
+        run: meson test -C builddir
 
       - name: Start example
         run: |
-          cd builddir\examples
-          .\example --help
+          $env:Path += ';.\builddir\lib'
+          .\builddir\examples\example.exe --help
 
       - name: Start single header example
+        run: .\builddir\examples\example-single-header.exe --help
+
+  build-test-run-windows-mingw:
+    name: Windows MinGW - Build & Test & Run
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install meson build system
+        run: python -m pip install meson
+
+      - name: Upgrade MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
+
+      - name: Configure build directory
+        run: meson setup builddir -Dtests=true -Dexamples=true
+
+      - name: Compile project
+        run: meson compile -C builddir
+
+      - name: Run tests
+        run: meson test -C builddir
+
+      - name: Start example
         run: |
-          cd builddir\examples
-          .\example-single-header --help
+          $env:Path += ';.\builddir\lib'
+          .\builddir\examples\example.exe --help
+
+      - name: Start single header example
+        run: .\builddir\examples\example-single-header.exe --help
 
   build-test-run-macos:
     name: MacOS - Build & Test & Run
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Update repositories
         run: brew update
@@ -94,31 +112,22 @@ jobs:
           brew install --force python3 && brew unlink python3 && brew unlink python3 && brew link --overwrite python3
 
       - name: Install meson build system
-        run: |
-          python3 -m pip install meson
+        run: python3 -m pip install meson
 
       - name: Install ninja build system
         run: brew install ninja
 
       - name: Configure build directory
-        run: meson builddir -Dtests=true -Dexamples=true
+        run: meson setup builddir -Dtests=true -Dexamples=true
 
       - name: Compile project
-        run: |
-          cd builddir
-          meson compile -j 8
+        run: meson compile -C builddir
 
       - name: Run tests
-        run: |
-          cd builddir
-          meson test
+        run: meson test -C builddir
 
       - name: Start example
-        run: |
-          cd builddir/examples
-          ./example --help
+        run: builddir/examples/example --help
 
       - name: Start single header example
-        run: |
-          cd builddir/examples
-          ./example-single-header --help
+        run: builddir/examples/example-single-header --help
