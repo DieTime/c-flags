@@ -50,12 +50,12 @@ TEST(CFlagsTestsShortName, Positive)
     EXPECT_EQ(*int32_value, 1);
     EXPECT_EQ(*int64_value, 1);
 
-    EXPECT_EQ(*unsigned_value, 1);
-    EXPECT_EQ(*uint8_value, 1);
-    EXPECT_EQ(*uint16_value, 1);
-    EXPECT_EQ(*uint32_value, 1);
-    EXPECT_EQ(*uint64_value, 1);
-    EXPECT_EQ(*size_t_value, 1);
+    EXPECT_EQ(*unsigned_value, 1U);
+    EXPECT_EQ(*uint8_value, 1U);
+    EXPECT_EQ(*uint16_value, 1U);
+    EXPECT_EQ(*uint32_value, 1U);
+    EXPECT_EQ(*uint64_value, 1U);
+    EXPECT_EQ(*size_t_value, 1U);
 
     EXPECT_EQ(*bool_value, true);
     EXPECT_STREQ(*string_value, "hello-world");

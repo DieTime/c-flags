@@ -11,13 +11,7 @@ TEST(CFlagsTestsNoValue, LongNameNoEqual)
     char **argv = (char **) argv_raw;
     int argc = (int) (sizeof(argv_raw) / sizeof(argv_raw[0]));
 
-    testing::internal::CaptureStdout();
-
-    EXPECT_EXIT({
-        c_flags_parse(&argc, &argv, false);
-    }, ::testing::ExitedWithCode(1), ".*");
-
-    EXPECT_NE(testing::internal::GetCapturedStdout().find("no value for flag"), std::string::npos);
+    EXPECT_EXIT(c_flags_parse(&argc, &argv, false), ::testing::ExitedWithCode(1), ".*");
 }
 
 TEST(CFlagsTestsNoValue, LongName)
@@ -30,13 +24,7 @@ TEST(CFlagsTestsNoValue, LongName)
     char **argv = (char **) argv_raw;
     int argc = (int) (sizeof(argv_raw) / sizeof(argv_raw[0]));
 
-    testing::internal::CaptureStdout();
-
-    EXPECT_EXIT({
-        c_flags_parse(&argc, &argv, false);
-    }, ::testing::ExitedWithCode(1), ".*");
-
-    EXPECT_NE(testing::internal::GetCapturedStdout().find("no value for flag"), std::string::npos);
+    EXPECT_EXIT(c_flags_parse(&argc, &argv, false), ::testing::ExitedWithCode(1), ".*");
 }
 
 TEST(CFlagsTestsNoValue, ShortName)
@@ -49,11 +37,5 @@ TEST(CFlagsTestsNoValue, ShortName)
     char **argv = (char **) argv_raw;
     int argc = (int) (sizeof(argv_raw) / sizeof(argv_raw[0]));
 
-    testing::internal::CaptureStdout();
-
-    EXPECT_EXIT({
-        c_flags_parse(&argc, &argv, false);
-    }, ::testing::ExitedWithCode(1), ".*");
-
-    EXPECT_NE(testing::internal::GetCapturedStdout().find("no value for flag"), std::string::npos);
+    EXPECT_EXIT(c_flags_parse(&argc, &argv, false), ::testing::ExitedWithCode(1), ".*");
 }

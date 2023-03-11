@@ -16,6 +16,14 @@ extern "C" {
 #include <string.h>
 #include <sys/types.h>
 
+#if defined(C_FLAGS_BUILD_SHARED) && defined(_MSC_VER)
+#define C_FLAGS_EXPORT extern __declspec(dllexport)
+#elif defined(C_FLAGS_BUILD_SHARED) && !defined(_MSC_VER)
+#define C_FLAGS_EXPORT __attribute__((visibility("default")))
+#else
+#define C_FLAGS_EXPORT
+#endif
+
 // clang-format off
 /**
  * Declare `c_flag_*` function definition for any type.
@@ -24,6 +32,7 @@ extern "C" {
  * @param postfix Function name postfix
  */
 #define DECLARE_C_FLAG_DEF(ptr_type, postfix)              \
+    C_FLAGS_EXPORT                                         \
     ptr_type *c_flag_##postfix(const char *long_name,      \
                                const char *short_name,     \
                                const char *desc,           \
@@ -55,6 +64,7 @@ DECLARE_C_FLAG_DEF(double, double)
  *
  * @param appname Application name of the usage block
  */
+C_FLAGS_EXPORT
 void c_flags_set_application_name(const char *appname);
 
 /**
@@ -70,6 +80,7 @@ void c_flags_set_application_name(const char *appname);
  *
  * @param description Postitional arguments description of the usage block
  */
+C_FLAGS_EXPORT
 void c_flags_set_positional_args_description(const char *description);
 
 /**
@@ -81,6 +92,7 @@ void c_flags_set_positional_args_description(const char *description);
  *
  * @param description Text of the usage block
  */
+C_FLAGS_EXPORT
 void c_flags_set_description(const char *description);
 
 /**
@@ -91,11 +103,13 @@ void c_flags_set_description(const char *description);
  * @param argv_ptr Pointer to program argv
  * @param usage_on_error Show usage on parsing error
  */
+C_FLAGS_EXPORT
 void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error);
 
 /**
  * Show usage based on your declared flags.
  */
+C_FLAGS_EXPORT
 void c_flags_usage(void);
 typedef struct
 {
@@ -553,47 +567,47 @@ static char *c_flag_default_to_str(const CFlag *flag)
 
     switch (flag->type) {
     case C_FLAG_INT:
-        sprintf(buff, "%d", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int));
+        snprintf(buff, sizeof(buff), "%d", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int));
         return buff;
     case C_FLAG_INT_8:
-        sprintf(buff, "%" PRId8, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int8_t));
+        snprintf(buff, sizeof(buff), "%" PRId8, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int8_t));
         return buff;
     case C_FLAG_INT_16:
-        sprintf(buff, "%" PRId16, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int16_t));
+        snprintf(buff, sizeof(buff), "%" PRId16, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int16_t));
         return buff;
     case C_FLAG_INT_32:
-        sprintf(buff, "%" PRId32, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int32_t));
+        snprintf(buff, sizeof(buff), "%" PRId32, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int32_t));
         return buff;
     case C_FLAG_INT_64:
-        sprintf(buff, "%" PRId64, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int64_t));
+        snprintf(buff, sizeof(buff), "%" PRId64, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, int64_t));
         return buff;
     case C_FLAG_UNSIGNED:
-        sprintf(buff, "%u", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, unsigned));
+        snprintf(buff, sizeof(buff), "%u", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, unsigned));
         return buff;
     case C_FLAG_UINT_8:
-        sprintf(buff, "%" PRIu8, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint8_t));
+        snprintf(buff, sizeof(buff), "%" PRIu8, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint8_t));
         return buff;
     case C_FLAG_UINT_16:
-        sprintf(buff, "%" PRIu16, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint16_t));
+        snprintf(buff, sizeof(buff), "%" PRIu16, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint16_t));
         return buff;
     case C_FLAG_UINT_32:
-        sprintf(buff, "%" PRIu32, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint32_t));
+        snprintf(buff, sizeof(buff), "%" PRIu32, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint32_t));
         return buff;
     case C_FLAG_UINT_64:
-        sprintf(buff, "%" PRIu64, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint64_t));
+        snprintf(buff, sizeof(buff), "%" PRIu64, *C_FLAG_DEFAULT_DATA_AS_PTR(flag, uint64_t));
         return buff;
     case C_FLAG_SIZE_T:
-        sprintf(buff, "%zu", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, size_t));
+        snprintf(buff, sizeof(buff), "%zu", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, size_t));
         return buff;
     case C_FLAG_BOOL:
         return *C_FLAG_DATA_AS_PTR(flag, bool) ? "true" : "false";
     case C_FLAG_STRING:
         return *C_FLAG_DATA_AS_PTR(flag, char *);
     case C_FLAG_FLOAT:
-        sprintf(buff, "%f", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, float));
+        snprintf(buff, sizeof(buff), "%f", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, float));
         return buff;
     case C_FLAG_DOUBLE:
-        sprintf(buff, "%lf", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, double));
+        snprintf(buff, sizeof(buff), "%lf", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, double));
         return buff;
     default:
         assert(false && "not all flag types implements c_flag_default_to_str()");
