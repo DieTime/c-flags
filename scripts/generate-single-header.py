@@ -26,6 +26,11 @@ def is_std_include(line: str) -> bool:
     return re.match(r'#include\s+<.+>', line)
 
 
+def does_not_contains_export_line(line: str) -> bool:
+    """Checks if the import is from the standard library, e.g. #include <stdio.h>"""
+    return "C_FLAGS_EXPORT" not in line
+
+
 def grab_std_includes(headers: List[str], sources: List[str]) -> List[str]:
     """Grab all std includes from headers and sources"""
     total_std_includes: List[str] = []
@@ -49,7 +54,7 @@ def grab_header_body(header: str) -> List[str]:
         start = find_last_index(lines, '#include\s+.+')
         end = find_last_index(lines, '#ifdef\s+__cplusplus.*')
 
-        return lines[start+1:end]
+        return list(filter(does_not_contains_export_line, lines[start+1:end]))
 
 
 def grab_source_body(source_file: str) -> List[str]:

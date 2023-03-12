@@ -5,18 +5,30 @@
 extern "C" {
 #endif
 
+#if defined(C_FLAGS_USE_SHARED_LIBRARY)
+    #if defined(C_FLAGS_BUILD_SHARED_LIBRARY)
+        #if defined(_MSC_VER)
+            #define C_FLAGS_EXPORT extern __declspec(dllexport)
+        #elif defined(__GNUC__)
+            #define C_FLAGS_EXPORT __attribute__((visibility("default")))
+        #else
+            #define C_FLAGS_EXPORT
+        #endif
+    #else
+        #if defined(_MSC_VER)
+            #define C_FLAGS_EXPORT extern __declspec(dllimport)
+        #else
+            #define C_FLAGS_EXPORT
+        #endif
+    #endif
+#else
+    #define C_FLAGS_EXPORT
+#endif
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <sys/types.h>
-
-#if defined(C_FLAGS_BUILD_SHARED) && defined(_MSC_VER)
-#define C_FLAGS_EXPORT extern __declspec(dllexport)
-#elif defined(C_FLAGS_BUILD_SHARED) && !defined(_MSC_VER)
-#define C_FLAGS_EXPORT __attribute__((visibility("default")))
-#else
-#define C_FLAGS_EXPORT
-#endif
 
 // clang-format off
 /**
