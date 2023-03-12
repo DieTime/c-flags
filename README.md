@@ -10,8 +10,6 @@
 
 Library for parsing command line arguments easily. Like golang `flag` module.
 
->❗ Currently working and tested on `Linux`
-
 >👍 Supports [single header](single-header/c-flags.h) version
 
 # 🔨 Building and installing
