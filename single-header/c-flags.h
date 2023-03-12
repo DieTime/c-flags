@@ -16,14 +16,6 @@ extern "C" {
 #include <string.h>
 #include <sys/types.h>
 
-#if defined(C_FLAGS_BUILD_SHARED) && defined(_MSC_VER)
-#define C_FLAGS_EXPORT extern __declspec(dllexport)
-#elif defined(C_FLAGS_BUILD_SHARED) && !defined(_MSC_VER)
-#define C_FLAGS_EXPORT __attribute__((visibility("default")))
-#else
-#define C_FLAGS_EXPORT
-#endif
-
 // clang-format off
 /**
  * Declare `c_flag_*` function definition for any type.
@@ -32,7 +24,6 @@ extern "C" {
  * @param postfix Function name postfix
  */
 #define DECLARE_C_FLAG_DEF(ptr_type, postfix)              \
-    C_FLAGS_EXPORT                                         \
     ptr_type *c_flag_##postfix(const char *long_name,      \
                                const char *short_name,     \
                                const char *desc,           \
@@ -64,7 +55,6 @@ DECLARE_C_FLAG_DEF(double, double)
  *
  * @param appname Application name of the usage block
  */
-C_FLAGS_EXPORT
 void c_flags_set_application_name(const char *appname);
 
 /**
@@ -80,7 +70,6 @@ void c_flags_set_application_name(const char *appname);
  *
  * @param description Postitional arguments description of the usage block
  */
-C_FLAGS_EXPORT
 void c_flags_set_positional_args_description(const char *description);
 
 /**
@@ -92,7 +81,6 @@ void c_flags_set_positional_args_description(const char *description);
  *
  * @param description Text of the usage block
  */
-C_FLAGS_EXPORT
 void c_flags_set_description(const char *description);
 
 /**
@@ -103,13 +91,11 @@ void c_flags_set_description(const char *description);
  * @param argv_ptr Pointer to program argv
  * @param usage_on_error Show usage on parsing error
  */
-C_FLAGS_EXPORT
 void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error);
 
 /**
  * Show usage based on your declared flags.
  */
-C_FLAGS_EXPORT
 void c_flags_usage(void);
 typedef struct
 {
