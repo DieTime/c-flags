@@ -1,0 +1,55 @@
+name: Windows MinGW
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-run-windows-mingw:
+    name: Build & Test & Run
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Install meson build system
+        run: python -m pip install meson
+
+      - name: Upgrade MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
+
+      - name: Configure build directory for shared library
+        run: meson setup builddir -Dtests=true -Dexamples=true -Ddefault_library=shared
+
+      - name: Compile project
+        run: meson compile -C builddir
+
+      - name: Run tests
+        run: meson test -C builddir
+
+      - name: Start example
+        run: |
+          $env:Path += ';.\builddir\lib'
+          .\builddir\examples\example.exe --help
+
+      - name: Start single header example
+        run: .\builddir\examples\example-single-header.exe --help
+
+      - name: Configure build directory for static library
+        run: meson configure builddir -Dtests=true -Dexamples=true -Ddefault_library=static
+
+      - name: Compile project
+        run: meson compile -C builddir
+
+      - name: Run tests
+        run: meson test -C builddir
+
+      - name: Start example
+        run: |
+          $env:Path += ';.\builddir\lib'
+          .\builddir\examples\example.exe --help
+
+      - name: Start single header example
+        run: .\builddir\examples\example-single-header.exe --help
