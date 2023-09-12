@@ -14,34 +14,7 @@ Library for parsing command line arguments easily. Like golang `flag` module.
 
 >👍 Supports [single header](single-header/c-flags.h) version
 
-# 🔨 Building and installing
-
-```bash
-$ meson builddir && cd builddir
-$ meson compile
-$ sudo meson install
-```
-
-# 🔌 Linking
-
-The library supports pkg-config, which makes linking easier and more convenient.
-
-```cmake
-cmake_minimum_required(VERSION 3.14)
-project(program)
-
-find_package(PkgConfig)
-pkg_search_module(C_FLAGS REQUIRED c-flags)
-
-add_executable(program examples/example.c)
-
-target_compile_options(program PUBLIC ${C_FLAGS_CFLAGS})
-target_link_libraries(program PUBLIC ${C_FLAGS_LIBRARIES})
-```
-
-# 👨‍💻 Usage
-
-You can see examples sources [here](examples).
+# Usage
 
 ```c
 #include <c-flags.h>
@@ -86,8 +59,6 @@ int main(int argc, char *argv[])
 }
 ```
 
-# 💻 Usage output example
-
 ```
 USAGE:
    builddir/examples/example [OPTIONS] <file-path>
@@ -113,11 +84,49 @@ OPTIONS:
        Default: true
 ```
 
-## ☕ Support
+# Install
 
-You can support me so that there will be more good open source projects in the future
-<p align="center" style="padding: 10px 0 20px 0">
-  <a href="https://www.buymeacoffee.com/glazzkoff" target="_blank">
-    <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="50" width="220">
-  </a>
-</p>
+```bash
+$ meson builddir && cd builddir
+$ meson compile
+$ sudo meson install
+```
+
+# Linking
+
+The library supports `pkg-config`, which makes linking easier and more convenient.
+
+```cmake
+cmake_minimum_required(VERSION 3.14)
+project(program)
+
+find_package(PkgConfig)
+pkg_search_module(C_FLAGS REQUIRED c-flags)
+
+add_executable(program examples/example.c)
+
+target_compile_options(program PUBLIC ${C_FLAGS_CFLAGS})
+target_link_libraries(program PUBLIC ${C_FLAGS_LIBRARIES})
+```
+
+# License
+
+Copyright (c) 2023 Denis Glazkov glazzk.off@mail.ru
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

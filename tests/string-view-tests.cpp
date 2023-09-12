@@ -1,5 +1,9 @@
-#include <gtest/gtest.h>
+/*
+ * SPDX-FileCopyrightText: Copyright 2023 Denis Glazkov <glazzk.off@mail.ru>
+ * SPDX-License-Identifier: MIT
+ */
 
+#include <gtest/gtest.h>
 #include "string-view.h"
 
 TEST(StringViewTest, sv_from_string)

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: Copyright 2023 Denis Glazkov <glazzk.off@mail.ru>
+ * SPDX-License-Identifier: MIT
+ */
+
 #include <assert.h>
 #include <errno.h>
 #include <inttypes.h>

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: Copyright 2023 Denis Glazkov <glazzk.off@mail.ru>
+ * SPDX-License-Identifier: MIT
+ */
+
 #ifndef STRING_VIEW_H
 #define STRING_VIEW_H
 

@@ -1,5 +1,9 @@
-#include <string.h>
+/*
+ * SPDX-FileCopyrightText: Copyright 2023 Denis Glazkov <glazzk.off@mail.ru>
+ * SPDX-License-Identifier: MIT
+ */
 
+#include <string.h>
 #include "string-view.h"
 
 StringView sv_from_string(const char *string)

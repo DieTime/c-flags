@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Copyright 2023 Denis Glazkov <glazzk.off@mail.ru>
+# SPDX-License-Identifier: MIT
+
 sources = [ 'c-flags.c', 'string-view.c' ]
 headers = [ 'c-flags.h' ]
 
