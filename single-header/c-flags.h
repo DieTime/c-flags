@@ -55,7 +55,7 @@ DECLARE_C_FLAG_DEF(double, double)
  *
  * @param appname Application name of the usage block
  */
-void c_flags_set_application_name(const char *appname);
+static inline void c_flags_set_application_name(const char *appname);
 
 /**
  * Customize usage block of help message.
@@ -70,7 +70,7 @@ void c_flags_set_application_name(const char *appname);
  *
  * @param description Postitional arguments description of the usage block
  */
-void c_flags_set_positional_args_description(const char *description);
+static inline void c_flags_set_positional_args_description(const char *description);
 
 /**
  * Customize description block of help message.
@@ -81,7 +81,7 @@ void c_flags_set_positional_args_description(const char *description);
  *
  * @param description Text of the usage block
  */
-void c_flags_set_description(const char *description);
+static inline void c_flags_set_description(const char *description);
 
 /**
  * Parse command line arguments into declared arguments.
@@ -91,12 +91,13 @@ void c_flags_set_description(const char *description);
  * @param argv_ptr Pointer to program argv
  * @param usage_on_error Show usage on parsing error
  */
-void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error);
+static inline void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error);
 
 /**
  * Show usage based on your declared flags.
  */
-void c_flags_usage(void);
+static inline void c_flags_usage(void);
+
 typedef struct
 {
     const char *data;
@@ -112,7 +113,7 @@ typedef struct
  * @param string line to create
  * @return string view instance
  */
-StringView sv_from_string(const char *string);
+static inline StringView sv_from_string(const char *string);
 
 /**
  * Create string view from `count` characters of passed string view
@@ -121,7 +122,7 @@ StringView sv_from_string(const char *string);
  * @param count number of characters
  * @return string view instance
  */
-StringView sv_slice_left(StringView sv, size_t count);
+static inline StringView sv_slice_left(StringView sv, size_t count);
 
 /**
  * Create string view by indenting `count` characters to the left of passed string view
@@ -130,7 +131,7 @@ StringView sv_slice_left(StringView sv, size_t count);
  * @param count number of characters to indenting
  * @return string view instance
  */
-StringView sv_chop_left(StringView sv, size_t count);
+static inline StringView sv_chop_left(StringView sv, size_t count);
 
 /**
  * Check if string view instances are equal
@@ -139,7 +140,7 @@ StringView sv_chop_left(StringView sv, size_t count);
  * @param b second string view instance
  * @return true if equal, otherwise false
  */
-bool sv_equal(StringView a, StringView b);
+static inline bool sv_equal(StringView a, StringView b);
 
 /**
  * Check if one string view starts with the second one
@@ -148,7 +149,7 @@ bool sv_equal(StringView a, StringView b);
  * @param b second string view instance
  * @return true if `a` starts with `b`, otherwise false
  */
-bool sv_starts_with(StringView a, StringView b);
+static inline bool sv_starts_with(StringView a, StringView b);
 
 /**
  * Check if one string view contains the second one
@@ -157,7 +158,7 @@ bool sv_starts_with(StringView a, StringView b);
  * @param b second string view instance
  * @return true if `a` contains `b`, otherwise false
  */
-bool sv_contains(StringView a, StringView b);
+static inline bool sv_contains(StringView a, StringView b);
 
 /**
  * Find index where the second string view starts in the first
@@ -166,7 +167,8 @@ bool sv_contains(StringView a, StringView b);
  * @param b second string view instance
  * @return index in `a` string if `a` contains `b`, otherwise -1
  */
-int sv_index_of(StringView a, StringView b);
+static inline int sv_index_of(StringView a, StringView b);
+
 #ifndef C_FLAGS_CAPACITY
 #define C_FLAGS_CAPACITY 64
 #endif
@@ -325,7 +327,7 @@ static char *c_flags_description_message = NULL;
 }
 // clang-format on
 
-static bool flag_names_unique(const char *long_name, const char *short_name)
+static inline bool flag_names_unique(const char *long_name, const char *short_name)
 {
     for (size_t i = 0; i < flags_size; i++) {
         CFlag *flag = &flags[i];
@@ -356,22 +358,22 @@ DECLARE_C_FLAG_IMPL(C_FLAG_STRING, char *, string)
 DECLARE_C_FLAG_IMPL(C_FLAG_FLOAT, float, float)
 DECLARE_C_FLAG_IMPL(C_FLAG_DOUBLE, double, double)
 
-void c_flags_set_application_name(const char *appname)
+static inline void c_flags_set_application_name(const char *appname)
 {
     c_flags_appname_message = (char *) appname;
 }
 
-void c_flags_set_positional_args_description(const char *description)
+static inline void c_flags_set_positional_args_description(const char *description)
 {
     c_flags_pos_args_desc = (char *) description;
 }
 
-void c_flags_set_description(const char *description)
+static inline void c_flags_set_description(const char *description)
 {
     c_flags_description_message = (char *) description;
 }
 
-static CFlag *find_c_flag_by_long_name(StringView long_name)
+static inline CFlag *find_c_flag_by_long_name(StringView long_name)
 {
     for (size_t i = 0; i < flags_size; i++) {
         CFlag *flag = &flags[i];
@@ -383,7 +385,7 @@ static CFlag *find_c_flag_by_long_name(StringView long_name)
     return NULL;
 }
 
-static CFlag *find_c_flag_by_short_name(StringView short_name)
+static inline CFlag *find_c_flag_by_short_name(StringView short_name)
 {
     for (size_t i = 0; i < flags_size; i++) {
         CFlag *flag = &flags[i];
@@ -395,7 +397,7 @@ static CFlag *find_c_flag_by_short_name(StringView short_name)
     return NULL;
 }
 
-void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
+static inline void c_flags_parse(int *argc_ptr, char ***argv_ptr, bool usage_on_error)
 {
     int argc = *argc_ptr;
     char **argv = *argv_ptr;
@@ -547,7 +549,7 @@ error:
     exit(1);
 }
 
-static char *c_flag_default_to_str(const CFlag *flag)
+static inline char *c_flag_default_to_str(const CFlag *flag)
 {
     static char buff[32] = {0};
 
@@ -602,7 +604,7 @@ static char *c_flag_default_to_str(const CFlag *flag)
     return "unreachable";
 }
 
-void c_flags_usage(void)
+static inline void c_flags_usage(void)
 {
     if (c_flags_appname_message)
         printf("USAGE:\n   %s%s%s\n\n",
@@ -633,7 +635,7 @@ void c_flags_usage(void)
     }
 }
 
-StringView sv_from_string(const char *string)
+static inline StringView sv_from_string(const char *string)
 {
     if (string == NULL)
         return (StringView){.data = NULL, .size = 0};
@@ -641,7 +643,7 @@ StringView sv_from_string(const char *string)
     return (StringView){.data = string, .size = strlen(string)};
 }
 
-StringView sv_slice_left(StringView sv, size_t count)
+static inline StringView sv_slice_left(StringView sv, size_t count)
 {
     if (count == 0 || sv.size < count)
         return sv_from_string(NULL);
@@ -649,7 +651,7 @@ StringView sv_slice_left(StringView sv, size_t count)
     return (StringView){.data = sv.data, .size = count};
 }
 
-StringView sv_chop_left(StringView sv, size_t count)
+static inline StringView sv_chop_left(StringView sv, size_t count)
 {
     if (sv.size <= count)
         return sv_from_string(NULL);
@@ -657,7 +659,7 @@ StringView sv_chop_left(StringView sv, size_t count)
     return (StringView){.data = sv.data + count, .size = sv.size - count};
 }
 
-bool sv_equal(StringView a, StringView b)
+static inline bool sv_equal(StringView a, StringView b)
 {
     if (a.size != b.size)
         return false;
@@ -665,7 +667,7 @@ bool sv_equal(StringView a, StringView b)
     return !memcmp(a.data, b.data, a.size);
 }
 
-bool sv_starts_with(StringView a, StringView b)
+static inline bool sv_starts_with(StringView a, StringView b)
 {
     if (b.data == NULL)
         return false;
@@ -673,12 +675,12 @@ bool sv_starts_with(StringView a, StringView b)
     return sv_equal(sv_slice_left(a, b.size), b);
 }
 
-bool sv_contains(StringView a, StringView b)
+static inline bool sv_contains(StringView a, StringView b)
 {
     return sv_index_of(a, b) != -1;
 }
 
-int sv_index_of(StringView a, StringView b)
+static inline int sv_index_of(StringView a, StringView b)
 {
     StringView null = sv_from_string(NULL);
 
