@@ -427,9 +427,9 @@ static char *c_flag_default_to_str(const CFlag *flag)
         snprintf(buff, sizeof(buff), "%zu", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, size_t));
         return buff;
     case C_FLAG_BOOL:
-        return *C_FLAG_DATA_AS_PTR(flag, bool) ? "true" : "false";
+        return *C_FLAG_DEFAULT_DATA_AS_PTR(flag, bool) ? "true" : "false";
     case C_FLAG_STRING:
-        return *C_FLAG_DATA_AS_PTR(flag, char *);
+        return *C_FLAG_DEFAULT_DATA_AS_PTR(flag, char *);
     case C_FLAG_FLOAT:
         snprintf(buff, sizeof(buff), "%f", *C_FLAG_DEFAULT_DATA_AS_PTR(flag, float));
         return buff;
