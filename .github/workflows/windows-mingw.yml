@@ -18,6 +18,7 @@ jobs:
       - name: Upgrade MinGW
         uses: egor-tensin/setup-mingw@v2
         with:
+          version: 12.2.0
           platform: x64
 
       - name: Configure build directory for shared library
