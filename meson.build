@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 project('c-flags', 'c',
-         default_options: ['c_std=c99', 'warning_level=3'],
+         default_options: ['c_std=c99', 'cpp_std=c++14', 'warning_level=3'],
          version: '1.5.7',
          license: 'MIT')
 
