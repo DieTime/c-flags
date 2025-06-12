@@ -3,7 +3,7 @@
 
 project('c-flags', 'c',
          default_options: ['c_std=c99', 'cpp_std=c++17', 'warning_level=3'],
-         version: '1.5.8',
+         version: '1.5.9',
          license: 'MIT')
 
 subdir('lib')
