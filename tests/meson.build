@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright 2023 Denis Glazkov <glazzk.off@mail.ru>
 # SPDX-License-Identifier: MIT
 
-add_languages('cpp', required: true)
+add_languages('cpp', native: false, required: true)
 
 libgtest_dep = dependency('gtest', fallback: 'gtest')
 
